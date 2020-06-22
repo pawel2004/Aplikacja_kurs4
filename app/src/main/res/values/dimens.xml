@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="progressbar_width">36dp</dimen>
+    <dimen name="progressbar_height">36dp</dimen>
+    <dimen name="arrow_width">48dp</dimen>
+    <dimen name="arrow_height">48dp</dimen>
+    <dimen name="arrow_marginLeft">10dp</dimen>
+    <dimen name="arrow_marginRight">10dp</dimen>
+    <dimen name="icon_menu_width">48dp</dimen>
+    <dimen name="icon_menu_height">48dp</dimen>
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="language">24sp</dimen>
+    <dimen name="add_button_height">48dp</dimen>
+    <dimen name="albums_icon_width">36dp</dimen>
+    <dimen name="albums_icon_height">36dp</dimen>
+    <dimen name="photo_list_height">120dp</dimen>
+    <dimen name="edit_text_padding">20dp</dimen>
+</resources>

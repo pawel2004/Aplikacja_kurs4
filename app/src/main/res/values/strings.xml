@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Zdjęcia Pawła</string>
+    <string name="camera">Tutaj będzie Kamera</string>
+    <string name="albums">Tutaj będą Albumy</string>
+    <string name="collage">Tutaj będzie Kolaż</string>
+    <string name="network">Tutaj będzie Sieć</string>
+    <string name="title">Tytuł notatki</string>
+    <string name="text">Tekst notatki</string>
+</resources>

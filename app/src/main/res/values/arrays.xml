@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="english">
+        <item>camera</item>
+        <item>albums</item>
+        <item>collage</item>
+        <item>network</item>
+        <item>notes</item>
+        <item>camera API</item>
+        <item>Language</item>
+    </string-array>
+
+    <string-array name="polish">
+        <item>aparat</item>
+        <item>albumy</item>
+        <item>kolaż</item>
+        <item>sieć</item>
+        <item>notatki</item>
+        <item>aparat API</item>
+        <item>Język</item>
+    </string-array>
+</resources>
