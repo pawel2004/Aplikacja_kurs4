@@ -2,8 +2,10 @@ package com.example.grybos.aplikacjakurs4.Activities;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,16 +14,16 @@ import com.example.grybos.aplikacjakurs4.R;
 
 import java.io.File;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 
 public class PhotoActivity extends AppCompatActivity {
 
     //zmienne
     private ImageView image;
     private ImageView delete;
-    private ImageView edit;
+    private ImageView crop;
     private String photo_path;
     private File image_file;
     private File[] delete_array;
@@ -38,7 +40,7 @@ public class PhotoActivity extends AppCompatActivity {
 
         image = findViewById(R.id.image);
         delete = findViewById(R.id.delete);
-        edit = findViewById(R.id.edit);
+        crop = findViewById(R.id.crop);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -86,6 +88,15 @@ public class PhotoActivity extends AppCompatActivity {
             }
         });
 
+        crop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                crop();
+
+            }
+        });
+
     }
 
     private Bitmap betterImageDecode(String filePath, int size) {
@@ -96,5 +107,33 @@ public class PhotoActivity extends AppCompatActivity {
         //
         myBitmap = BitmapFactory.decodeFile(filePath, options);
         return myBitmap;
+    }
+
+    private void crop(){
+
+        File foto = new File(photo_path);
+        Uri uri = Uri.fromFile(foto);
+
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        cropIntent.setDataAndType(uri, "image/*");
+        cropIntent.putExtra("crop", true);
+        cropIntent.putExtra("return-data", true);
+        startActivityForResult(cropIntent, 222);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == 222){
+
+            Bundle extras = data.getExtras();
+            Bitmap b = (Bitmap) extras.getParcelable("data");
+
+
+        }
+
     }
 }

@@ -1,8 +1,10 @@
 package com.example.grybos.aplikacjakurs4.Activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +45,11 @@ public class CameraActivity extends AppCompatActivity {
     private File[] folders;
     private ArrayList<String> names = new ArrayList <String> ();
     String [] names_array;
+    private Camera.Parameters camParams;
+    private ImageView color_effects;
+    private ImageView white_balance;
+    private ImageView exposure;
+    private ImageView size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +60,16 @@ public class CameraActivity extends AppCompatActivity {
 
         take = findViewById(R.id.take);
         confirm = findViewById(R.id.confirm);
+        color_effects = findViewById(R.id.color_effects);
+        white_balance = findViewById(R.id.white_balance);
+        exposure = findViewById(R.id.exposure);
+        size = findViewById(R.id.sizes);
 
         initCamera();
 
         initPreview();
+
+        cameraParams();
 
         take.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,5 +278,212 @@ public class CameraActivity extends AppCompatActivity {
 
         }
     };
+
+    private void cameraParams(){
+
+        camParams = camera.getParameters();
+
+        Log.d("Parametry", Arrays.toString(camParams.getSupportedWhiteBalance().toArray()));
+
+        Log.d("Parametry", Arrays.toString(camParams.getSupportedPictureSizes().toArray()));
+
+        Log.d("Parametry", Arrays.toString(camParams.getSupportedColorEffects().toArray()));
+
+        Log.d("Parametry", "Minimalna kompensacja naświetlania: " + camParams.getMinExposureCompensation());
+
+        Log.d("Parametry", "Maksymalna kompensacja naświetlania: " + camParams.getMaxExposureCompensation());
+
+        Log.d("Parametry", "bieżąca kompensacja naświetlania: " + camParams.getExposureCompensation());
+
+        color_effects.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (camParams.getSupportedColorEffects() == null){
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                    alert.setTitle("Uwaga!");
+                    alert.setMessage("Twoja kamera nie obsługuje efektów!");
+                    alert.setCancelable(false);
+                    alert.setNeutralButton("OK", null).show();
+
+                }else {
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                    alert.setTitle("Efekty kolorów:");
+                    //nie może mieć setMessage!!!
+
+                    final String[] opcje = new String[camParams.getSupportedColorEffects().toArray().length];
+
+                    for (String tmp: camParams.getSupportedColorEffects()){
+
+                        opcje[camParams.getSupportedColorEffects().indexOf(tmp)] = tmp;
+
+                    }
+
+                    alert.setItems(opcje, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // wyswietl opcje[which]);
+
+                            camParams.setColorEffect(opcje[which]);
+                            camera.setParameters(camParams);
+
+                        }
+                    });
+                    //
+                    alert.show();
+
+
+                }
+
+            }
+        });
+
+        white_balance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (camParams.getSupportedColorEffects() == null){
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                    alert.setTitle("Uwaga!");
+                    alert.setMessage("Twoja kamera nie obsługuje efektów!");
+                    alert.setCancelable(false);
+                    alert.setNeutralButton("OK", null).show();
+
+                }else {
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                    alert.setTitle("Balans bieli:");
+                    //nie może mieć setMessage!!!
+
+                    final String[] opcje = new String[camParams.getSupportedWhiteBalance().toArray().length];
+
+                    for (String tmp: camParams.getSupportedWhiteBalance()){
+
+                        opcje[camParams.getSupportedWhiteBalance().indexOf(tmp)] = tmp;
+
+                    }
+
+                    alert.setItems(opcje, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // wyswietl opcje[which]);
+
+                            camParams.setWhiteBalance((opcje[which]));
+                            camera.setParameters(camParams);
+
+                        }
+                    });
+                    //
+                    alert.show();
+
+
+                }
+
+            }
+        });
+
+        exposure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (camParams.getSupportedColorEffects() == null){
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                    alert.setTitle("Uwaga!");
+                    alert.setMessage("Twoja kamera nie obsługuje efektów!");
+                    alert.setCancelable(false);
+                    alert.setNeutralButton("OK", null).show();
+
+                }else {
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                    alert.setTitle("Ekspozycja:");
+                    //nie może mieć setMessage!!!
+
+                    int max = camParams.getMaxExposureCompensation();
+                    int min = camParams.getMinExposureCompensation();
+
+                    final String[] opcje = new String[max - min + 1];
+
+                    for (int i = 0; i < opcje.length; i++){
+
+                        opcje[i] = String.valueOf(max);
+
+                        max = max - 1;
+
+                    }
+
+                    Log.d("tablica", Arrays.toString(opcje));
+
+                    alert.setItems(opcje, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // wyswietl opcje[which]);
+
+                            camParams.setExposureCompensation(Integer.parseInt(opcje[which]));
+                            camera.setParameters(camParams);
+
+                        }
+                    });
+                    //
+                    alert.show();
+
+
+                }
+
+            }
+        });
+
+        size.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (camParams.getSupportedColorEffects() == null){
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                    alert.setTitle("Uwaga!");
+                    alert.setMessage("Twoja kamera nie obsługuje wielkości!");
+                    alert.setCancelable(false);
+                    alert.setNeutralButton("OK", null).show();
+
+                }else {
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                    alert.setTitle("Wielkość zdjęcia: ");
+                    //nie może mieć setMessage!!!
+
+                    final String[] opcje = new String[camParams.getSupportedPictureSizes().toArray().length];
+
+                    for (Camera.Size tmp: camParams.getSupportedPictureSizes()){
+
+                        Point size = new Point(tmp.width, tmp.height);
+
+                        opcje[camParams.getSupportedPictureSizes().indexOf(tmp)] = size.x + "x" + size.y;
+
+                    }
+
+                    Log.d("tablica", Arrays.toString(opcje));
+
+                    alert.setItems(opcje, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // wyswietl opcje[which]);
+
+                            String[] size = opcje[which].split("x");
+
+                            camParams.setPictureSize(Integer.parseInt(size[0]), Integer.parseInt(size[1]));
+                            camera.setParameters(camParams);
+
+                        }
+                    });
+                    //
+                    alert.show();
+
+
+                }
+
+            }
+        });
+
+    }
 
 }

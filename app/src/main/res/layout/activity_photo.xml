@@ -26,6 +26,13 @@
             android:layout_weight="1"
             android:id="@+id/delete"/>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/baseline_brush_black_18dp"
+            android:layout_weight="1"
+            android:id="@+id/crop"/>
+
     </LinearLayout>
 
 </RelativeLayout>
