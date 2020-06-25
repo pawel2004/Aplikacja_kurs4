@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewGroup.LayoutParams params;
     private byte[] byteArray;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
