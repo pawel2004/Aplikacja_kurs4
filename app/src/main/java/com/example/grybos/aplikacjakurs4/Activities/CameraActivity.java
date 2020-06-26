@@ -90,6 +90,11 @@ public class CameraActivity extends AppCompatActivity {
 
                 if (control == 1){
 
+                    Intent intent = new Intent();
+                    intent.putExtra("fotoData", fdata);
+                    setResult(888, intent);
+                    finish();
+
                     final AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
                     alert.setTitle("Gdzie chcesz zapisać zdjęcie?");
                     folders = dir.listFiles();

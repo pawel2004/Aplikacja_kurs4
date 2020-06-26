@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".Activities.CollageActivity">
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:text="@string/collage"/>
+        android:id="@+id/frame1"
+        android:background="@color/black">
+
+    </FrameLayout>
 
 </RelativeLayout>

@@ -92,7 +92,13 @@ public class PhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                crop();
+                AlertDialog.Builder alert = new AlertDialog.Builder(PhotoActivity.this);
+                alert.setTitle("To nie działa na wszystkich urządzeniach!");
+                alert.setCancelable(false);
+                alert.setNeutralButton("OK", null);
+                alert.show();
+
+//                crop();
 
             }
         });

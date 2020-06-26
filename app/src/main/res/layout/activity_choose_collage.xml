@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.ChooseCollageActivity"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <ImageView
+        android:layout_width="@dimen/add_button_height"
+        android:layout_height="@dimen/add_button_height"
+        android:src="@drawable/set1"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:id="@+id/image1"/>
+
+    <ImageView
+        android:layout_width="@dimen/add_button_height"
+        android:layout_height="@dimen/add_button_height"
+        android:src="@drawable/set2"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:id="@+id/image2"/>
+
+    <ImageView
+        android:layout_width="@dimen/add_button_height"
+        android:layout_height="@dimen/add_button_height"
+        android:src="@drawable/set3"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:id="@+id/image3"/>
+
+</LinearLayout>

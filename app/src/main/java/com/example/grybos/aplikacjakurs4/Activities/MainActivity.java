@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                newIntent(CollageActivity.class);
+                newIntent(ChooseCollageActivity.class);
 
             }
         });
