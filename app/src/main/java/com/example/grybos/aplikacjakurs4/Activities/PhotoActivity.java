@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +14,13 @@ import android.widget.ImageView;
 
 import com.example.grybos.aplikacjakurs4.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -24,6 +32,7 @@ public class PhotoActivity extends AppCompatActivity {
     private ImageView image;
     private ImageView delete;
     private ImageView crop;
+    private ImageView rotate;
     private String photo_path;
     private File image_file;
     private File[] delete_array;
@@ -41,6 +50,7 @@ public class PhotoActivity extends AppCompatActivity {
         image = findViewById(R.id.image);
         delete = findViewById(R.id.delete);
         crop = findViewById(R.id.crop);
+        rotate = findViewById(R.id.rotate);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -100,6 +110,41 @@ public class PhotoActivity extends AppCompatActivity {
 
 //                crop();
 
+            }
+        });
+
+        rotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+//
+                Bitmap oryginal = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                Bitmap rotated = Bitmap.createBitmap(oryginal, 0, 0, oryginal.getWidth(), oryginal.getHeight(), matrix, true);
+
+                image.setImageBitmap(rotated);
+//
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                rotated.compress(Bitmap.CompressFormat.JPEG, 100, stream); // kompresja, typ pliku jpg, png
+                byte[] byteArray = stream.toByteArray();
+
+                FileOutputStream fs = null;
+                try {
+                    fs = new FileOutputStream(photo_path);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fs.write(byteArray);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

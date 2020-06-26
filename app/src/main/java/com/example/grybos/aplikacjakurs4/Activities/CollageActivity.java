@@ -1,5 +1,6 @@
 package com.example.grybos.aplikacjakurs4.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.grybos.aplikacjakurs4.Activities.MainActivity.dir;
@@ -94,39 +96,59 @@ public class CollageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Bitmap b = frame1.getDrawingCache(true);
+                AlertDialog.Builder alert = new AlertDialog.Builder(CollageActivity.this);
+                alert.setMessage("Czy chcesz zapisać kolaż?");
+                alert.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Bitmap b = frame1.getDrawingCache(true);
 
-                File dir1 = new File(dir, "kolaże");
+                        File dir1 = new File(dir, "kolaże");
 
-                if (!dir1.exists()){
+                        if (!dir1.exists()){
 
-                    dir1.mkdir();
+                            dir1.mkdir();
 
-                }
+                        }
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                b.compress(Bitmap.CompressFormat.JPEG, 100, stream); // kompresja, typ pliku jpg, png
-                byte[] byteArray = stream.toByteArray();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        b.compress(Bitmap.CompressFormat.JPEG, 100, stream); // kompresja, typ pliku jpg, png
+                        byte[] byteArray = stream.toByteArray();
 
-                SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                String d = df.format(new Date());
+                        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                        String d = df.format(new Date());
 
-                FileOutputStream fs = null;
-                try {
-                    fs = new FileOutputStream(dir1.getPath() + "/" + d);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    fs.write(byteArray);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    fs.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                        FileOutputStream fs = null;
+                        try {
+                            fs = new FileOutputStream(dir1.getPath() + "/" + d);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            fs.write(byteArray);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            fs.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent intent = new Intent(CollageActivity.this, PhotoActivity.class);
+                        intent.putExtra("path", dir1.getPath() + "/" + d);
+                        startActivity(intent);
+
+                    }
+                });
+
+                alert.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert.show();
 
             }
         });

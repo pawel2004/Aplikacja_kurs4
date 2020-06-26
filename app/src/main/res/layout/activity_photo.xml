@@ -33,6 +33,13 @@
             android:layout_weight="1"
             android:id="@+id/crop"/>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/baseline_rotate_90_degrees_ccw_black_18dp"
+            android:layout_weight="1"
+            android:id="@+id/rotate"/>
+
     </LinearLayout>
 
 </RelativeLayout>
