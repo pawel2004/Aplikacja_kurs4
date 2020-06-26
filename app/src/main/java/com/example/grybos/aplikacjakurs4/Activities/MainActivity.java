@@ -193,7 +193,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                newIntent(CameraActivity.class);
+                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                intent.putExtra("key", 0);
+                startActivity(intent);
 
             }
         });

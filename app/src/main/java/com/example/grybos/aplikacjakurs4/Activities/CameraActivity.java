@@ -58,6 +58,10 @@ public class CameraActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        final Bundle bundle = getIntent().getExtras();
+
+        Log.d("control", "Klucz: " + bundle.getInt("key"));
+
         take = findViewById(R.id.take);
         confirm = findViewById(R.id.confirm);
         color_effects = findViewById(R.id.color_effects);
@@ -90,56 +94,65 @@ public class CameraActivity extends AppCompatActivity {
 
                 if (control == 1){
 
-                    Intent intent = new Intent();
-                    intent.putExtra("fotoData", fdata);
-                    setResult(888, intent);
-                    finish();
+                    if (bundle.getInt("key") == 1){
 
-                    final AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
-                    alert.setTitle("Gdzie chcesz zapisać zdjęcie?");
-                    folders = dir.listFiles();
-                    for (File file : folders){
+                        Log.d("1", "Koniec!");
 
-                        names.add(file.getName());
+                        Intent intent2 = new Intent();
+                        intent2.putExtra("fotoData", fdata);
+                        setResult(888, intent2);
+                        finish();
 
                     }
+                    else {
 
-                    names_array = names.toArray(new String[0]);
+                        final AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                        alert.setTitle("Gdzie chcesz zapisać zdjęcie?");
+                        folders = dir.listFiles();
+                        for (File file : folders){
 
-                    names.clear();
-
-                    Log.d("names", Arrays.toString(names_array));
-
-                    alert.setItems(names_array, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                            Log.d("path", "Path: " + folders[i]);
-
-                            SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                            String d = df.format(new Date());
-
-                            FileOutputStream fs = null;
-                            try {
-                                fs = new FileOutputStream(folders[i] + "/" + d + ".jpg");
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            try {
-                                fs.write(fdata);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            try {
-                                fs.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            names.add(file.getName());
 
                         }
-                    });
 
-                    alert.show();
+                        names_array = names.toArray(new String[0]);
+
+                        names.clear();
+
+                        Log.d("names", Arrays.toString(names_array));
+
+                        alert.setItems(names_array, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                Log.d("path", "Path: " + folders[i]);
+
+                                SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                                String d = df.format(new Date());
+
+                                FileOutputStream fs = null;
+                                try {
+                                    fs = new FileOutputStream(folders[i] + "/" + d + ".jpg");
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    fs.write(fdata);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    fs.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+
+                        alert.show();
+
+                    }
 
                 }
 
