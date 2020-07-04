@@ -183,13 +183,13 @@ public class PhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(PhotoActivity.this);
-                alert.setTitle("To nie działa na wszystkich urządzeniach!");
-                alert.setCancelable(false);
-                alert.setNeutralButton("OK", null);
-                alert.show();
+//                AlertDialog.Builder alert = new AlertDialog.Builder(PhotoActivity.this);
+//                alert.setTitle("To nie działa na wszystkich urządzeniach!");
+//                alert.setCancelable(false);
+//                alert.setNeutralButton("OK", null);
+//                alert.show();
 
-//                crop();
+                crop();
 
             }
         });
@@ -261,8 +261,6 @@ public class PhotoActivity extends AppCompatActivity {
 
         if (requestCode == 222){
 
-            Bundle extras = data.getExtras();
-            Bitmap b = (Bitmap) extras.getParcelable("data");
 
 
         }

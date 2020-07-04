@@ -1,7 +1,9 @@
 package com.example.grybos.aplikacjakurs4.Activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -50,6 +52,9 @@ public class CameraActivity extends AppCompatActivity {
     private ImageView white_balance;
     private ImageView exposure;
     private ImageView size;
+    private SharedPreferences prefs;
+    private String resolution;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class CameraActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        final Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
 
         Log.d("control", "Klucz: " + bundle.getInt("key"));
 
@@ -68,6 +73,8 @@ public class CameraActivity extends AppCompatActivity {
         white_balance = findViewById(R.id.white_balance);
         exposure = findViewById(R.id.exposure);
         size = findViewById(R.id.sizes);
+
+        prefs = getSharedPreferences("size", Context.MODE_PRIVATE);
 
         initCamera();
 
@@ -301,6 +308,42 @@ public class CameraActivity extends AppCompatActivity {
 
         camParams = camera.getParameters();
 
+        resolution = prefs.getString("size", "320x240");
+
+        String[] size1 = resolution.split("x");
+
+        if (bundle.getInt("key") == 1){
+
+            if(Integer.parseInt(size1[0]) > 1920 || Integer.parseInt(size1[1]) > 1080){
+
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("size", "1920x1080");
+                editor.apply();
+
+                resolution = prefs.getString("size", "320x240");
+
+                String[] size2 = resolution.split("x");
+
+                camParams.setPictureSize(Integer.parseInt(size2[0]), Integer.parseInt(size2[1]));
+                camera.setParameters(camParams);
+
+            }
+            else {
+
+                camParams.setPictureSize(Integer.parseInt(size1[0]), Integer.parseInt(size1[1]));
+                camera.setParameters(camParams);
+
+            }
+
+        }
+
+        else {
+
+            camParams.setPictureSize(Integer.parseInt(size1[0]), Integer.parseInt(size1[1]));
+            camera.setParameters(camParams);
+
+        }
+
         Log.d("Parametry", Arrays.toString(camParams.getSupportedWhiteBalance().toArray()));
 
         Log.d("Parametry", Arrays.toString(camParams.getSupportedPictureSizes().toArray()));
@@ -488,8 +531,39 @@ public class CameraActivity extends AppCompatActivity {
 
                             String[] size = opcje[which].split("x");
 
-                            camParams.setPictureSize(Integer.parseInt(size[0]), Integer.parseInt(size[1]));
-                            camera.setParameters(camParams);
+                            if (bundle.getInt("key") == 1){
+
+                                if(Integer.parseInt(size[0]) > 1920 || Integer.parseInt(size[1]) > 1080){
+
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(CameraActivity.this);
+                                    alert.setTitle("Nie możesz tak dużej rozdzielczości!");
+                                    alert.setCancelable(false);
+                                    alert.setNeutralButton("OK", null);
+                                    alert.show();
+
+                                }
+                                else {
+
+                                    camParams.setPictureSize(Integer.parseInt(size[0]), Integer.parseInt(size[1]));
+                                    camera.setParameters(camParams);
+
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("size", opcje[which]);
+                                    editor.apply();
+
+                                }
+
+                            }
+                            else {
+
+                                camParams.setPictureSize(Integer.parseInt(size[0]), Integer.parseInt(size[1]));
+                                camera.setParameters(camParams);
+
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString("size", opcje[which]);
+                                editor.apply();
+
+                            }
 
                         }
                     });
