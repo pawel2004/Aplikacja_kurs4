@@ -10,9 +10,13 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.grybos.aplikacjakurs4.Helpers.Networking;
 import com.example.grybos.aplikacjakurs4.Helpers.UploadFoto;
@@ -22,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,8 +44,8 @@ public class PhotoActivity extends AppCompatActivity {
     private ImageView delete;
     private ImageView crop;
     private ImageView rotate;
-    private ImageButton upload;
-    private ImageButton share;
+    private LinearLayout upload;
+    private LinearLayout share;
     private String photo_path;
     private File image_file;
     private File[] delete_array;
@@ -56,12 +61,15 @@ public class PhotoActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         image = findViewById(R.id.image);
         delete = findViewById(R.id.delete);
         crop = findViewById(R.id.crop);
         rotate = findViewById(R.id.rotate);
-        upload = findViewById(R.id.bt1);
-        share = findViewById(R.id.bt2);
+        upload = findViewById(R.id.upload);
+        share = findViewById(R.id.share);
 
         pDialog = new ProgressDialog(PhotoActivity.this);
         pDialog.setMessage("Ładuję...");
@@ -85,7 +93,21 @@ public class PhotoActivity extends AppCompatActivity {
 
                 if (Networking.checkConnection(PhotoActivity.this)){
 
-                    new UploadFoto(PhotoActivity.this, pDialog, photo_path).execute(URL_SERWERA);
+                    AlertDialog.Builder alert = new AlertDialog.Builder(PhotoActivity.this);
+                    alert.setTitle("Czy na pewno?");
+                    alert.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new UploadFoto(PhotoActivity.this, pDialog, photo_path).execute(URL_SERWERA);
+                        }
+                    });
+                    alert.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    alert.show();
 
                 }
                 else {
@@ -97,6 +119,28 @@ public class PhotoActivity extends AppCompatActivity {
                     alert.show();
 
                 }
+
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("image/jpeg");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                File file = new File(Environment.getExternalStorageDirectory() + File.separator + "temporary_file.jpg");
+                try {
+                    file.createNewFile();
+                    FileOutputStream fo = new FileOutputStream(file);
+                    fo.write(bytes.toByteArray());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/temporary_file.jpg"));
+                startActivity(Intent.createChooser(share, "Share Image"));
 
             }
         });
