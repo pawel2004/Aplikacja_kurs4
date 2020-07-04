@@ -6,4 +6,6 @@
     <string name="network">Tutaj będzie Sieć</string>
     <string name="title">Tytuł notatki</string>
     <string name="text">Tekst notatki</string>
+    <string name="upload">Załaduj na Speca</string>
+    <string name="share">Podziel się</string>
 </resources>

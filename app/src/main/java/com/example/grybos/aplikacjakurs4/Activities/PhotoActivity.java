@@ -1,6 +1,7 @@
 package com.example.grybos.aplikacjakurs4.Activities;
 
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,8 +11,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.grybos.aplikacjakurs4.Helpers.Networking;
+import com.example.grybos.aplikacjakurs4.Helpers.UploadFoto;
 import com.example.grybos.aplikacjakurs4.R;
 
 import java.io.ByteArrayOutputStream;
@@ -26,6 +30,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.grybos.aplikacjakurs4.Helpers.Settings.URL_SERWERA;
+
 public class PhotoActivity extends AppCompatActivity {
 
     //zmienne
@@ -33,12 +39,15 @@ public class PhotoActivity extends AppCompatActivity {
     private ImageView delete;
     private ImageView crop;
     private ImageView rotate;
+    private ImageButton upload;
+    private ImageButton share;
     private String photo_path;
     private File image_file;
     private File[] delete_array;
     private int size = 0;
     private int sizeX, sizeY;
     private Bitmap bmp;
+    private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +60,12 @@ public class PhotoActivity extends AppCompatActivity {
         delete = findViewById(R.id.delete);
         crop = findViewById(R.id.crop);
         rotate = findViewById(R.id.rotate);
+        upload = findViewById(R.id.bt1);
+        share = findViewById(R.id.bt2);
+
+        pDialog = new ProgressDialog(PhotoActivity.this);
+        pDialog.setMessage("Ładuję...");
+        pDialog.setCancelable(false);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -63,6 +78,28 @@ public class PhotoActivity extends AppCompatActivity {
 
         sizeX = bmp.getWidth();
         sizeY = bmp.getHeight();
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Networking.checkConnection(PhotoActivity.this)){
+
+                    new UploadFoto(PhotoActivity.this, pDialog, photo_path).execute(URL_SERWERA);
+
+                }
+                else {
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(PhotoActivity.this);
+                    alert.setTitle("Nie ma połączenia z Internetem!");
+                    alert.setCancelable(false);
+                    alert.setNeutralButton("OK", null);
+                    alert.show();
+
+                }
+
+            }
+        });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

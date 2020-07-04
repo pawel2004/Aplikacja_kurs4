@@ -15,4 +15,6 @@
     <dimen name="albums_icon_height">36dp</dimen>
     <dimen name="photo_list_height">120dp</dimen>
     <dimen name="edit_text_padding">20dp</dimen>
+    <dimen name="drawer_bar">250dp</dimen>
+    <dimen name="image_button_height">50dp</dimen>
 </resources>

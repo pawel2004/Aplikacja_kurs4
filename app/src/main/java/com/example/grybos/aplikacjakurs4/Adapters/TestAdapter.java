@@ -119,7 +119,7 @@ public class TestAdapter extends ArrayAdapter{
                 alert.setCancelable(false);
                 alert.setMessage("Nazwa: " + _list.get(position).getName());
                 alert.setMessage("Ścieżka: " + _list.get(position).getPath());
-                alert.setNeutralButton("OK", null).show();  // null to pusty click
+                alert.setNeutralButton("OK", null);  // null to pusty click
                 alert.show();
             }
         });
