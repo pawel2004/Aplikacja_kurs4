@@ -43,6 +43,8 @@ public class UploadFoto extends AsyncTask<String, Void, String> {
 
         Log.d("xxx", strings[0]);
 
+        Log.d("xxx", photo_path);
+
         originalBitmap = BitmapFactory.decodeFile(photo_path);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         originalBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
