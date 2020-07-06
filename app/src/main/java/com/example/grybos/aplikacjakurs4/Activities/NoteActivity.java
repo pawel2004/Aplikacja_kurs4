@@ -1,9 +1,11 @@
 package com.example.grybos.aplikacjakurs4.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -29,7 +31,7 @@ public class NoteActivity extends AppCompatActivity {
     private DatabaseManager db;
     private ArrayList<Note> notes;
     private int editText_switch = 0;
-    private String[] colors_array = {"#000000", "#FFFFFF", "#FFFF00", "#64DD17", "#0091EA"};
+    private String[] colors_array = {"#000000", "#c8c8c8", "#FFFF00", "#64DD17", "#0091EA"};
     private String color1;
     private String color2;
 
@@ -66,6 +68,7 @@ public class NoteActivity extends AppCompatActivity {
                 alert.setTitle("Wybierz opcję: ");
                 String[] opcje = {"usuń", "edytuj", "sortuj wg tytułu", "sortuj wg koloru"};
                 alert.setItems(opcje, new DialogInterface.OnClickListener() {
+                    @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -93,25 +96,27 @@ public class NoteActivity extends AppCompatActivity {
                                 text.setText(notes.get(position).getText());
                                 text.setTextColor(Color.parseColor(notes.get(position).getTecolor()));
 
-                                title.setOnClickListener(new View.OnClickListener() {
+                                title.setOnTouchListener(new View.OnTouchListener() {
                                     @Override
-                                    public void onClick(View view) {
+                                    public boolean onTouch(View v, MotionEvent event) {
 
                                         editText_switch = 0;
 
                                         Log.d("xxx", "Switch: " + editText_switch);
 
+                                        return false;
                                     }
                                 });
 
-                                text.setOnClickListener(new View.OnClickListener() {
+                                text.setOnTouchListener(new View.OnTouchListener() {
                                     @Override
-                                    public void onClick(View view) {
+                                    public boolean onTouch(View v, MotionEvent event) {
 
                                         editText_switch = 1;
 
                                         Log.d("xxx", "Switch: " + editText_switch);
 
+                                        return false;
                                     }
                                 });
 

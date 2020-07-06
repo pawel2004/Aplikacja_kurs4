@@ -1,5 +1,6 @@
 package com.example.grybos.aplikacjakurs4.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -35,7 +37,7 @@ public class TestAdapter extends ArrayAdapter{
     private String Title;
     private String Text;
     private int editText_switch = 0;
-    private String[] colors_array = {"#000000", "#FFFFFF", "#FFFF00", "#64DD17", "#0091EA"};
+    private String[] colors_array = {"#000000", "#c8c8c8", "#FFFF00", "#64DD17", "#0091EA"};
     private DatabaseManager db;
     private String color1 = colors_array[0];
     private String color2 = colors_array[0];
@@ -126,6 +128,7 @@ public class TestAdapter extends ArrayAdapter{
 
         ImageView iv4 = (ImageView) convertView.findViewById(R.id.edit);
         iv4.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onClick(View view) {
                 Log.d("xxx", "Klik w edycję");
@@ -137,25 +140,27 @@ public class TestAdapter extends ArrayAdapter{
                 final EditText text = (EditText) editView.findViewById(R.id.text);
                 LinearLayout colors = (LinearLayout) editView.findViewById(R.id.colors);
 
-                title.setOnClickListener(new View.OnClickListener() {
+                title.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View view) {
+                    public boolean onTouch(View v, MotionEvent event) {
 
                         editText_switch = 0;
 
                         Log.d("xxx", "Switch: " + editText_switch);
 
+                        return false;
                     }
                 });
 
-                text.setOnClickListener(new View.OnClickListener() {
+                text.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View view) {
+                    public boolean onTouch(View v, MotionEvent event) {
 
                         editText_switch = 1;
 
                         Log.d("xxx", "Switch: " + editText_switch);
 
+                        return false;
                     }
                 });
 
