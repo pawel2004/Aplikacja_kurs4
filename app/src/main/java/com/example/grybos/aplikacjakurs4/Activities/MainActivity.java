@@ -15,11 +15,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amitshekhar.DebugDB;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.grybos.aplikacjakurs4.Adapters.RAdapter;
 import com.example.grybos.aplikacjakurs4.Helpers.DatabaseManager;
+import com.example.grybos.aplikacjakurs4.Helpers.Item;
+import com.example.grybos.aplikacjakurs4.Helpers.Networking;
 import com.example.grybos.aplikacjakurs4.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,6 +49,10 @@ import java.util.Date;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static com.example.grybos.aplikacjakurs4.Helpers.Settings.JSON_URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txt5;
     private TextView txt6;
     private TextView txt7;
+    private ProgressBar progressBar;
     private SharedPreferences prefs;
     private int Lang;
     private LinearLayout camera;
@@ -63,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
     String [] names_array;
     private ViewGroup.LayoutParams params;
     private byte[] byteArray;
+    private ArrayList<Item> list = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private RAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
 
     @Override
@@ -96,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
         Lang = prefs.getInt("lang", 0);
 
+        recyclerView = findViewById(R.id.recyclerView);
+
         language_set = findViewById(R.id.language_set);
         txt1 = findViewById(R.id.camera_text);
         txt2 = findViewById(R.id.albums_text);
@@ -111,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         network = findViewById(R.id.network_button);
         notes = findViewById(R.id.notes_button);
         camera_api = findViewById(R.id.camera_api_button);
+
+        progressBar = findViewById(R.id.progress_bar);
 
         setLanguage();
 
@@ -295,6 +323,73 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void displayRecycle(){
+
+        if (Networking.checkConnection(MainActivity.this)){
+
+            progressBar.setVisibility(View.INVISIBLE);
+
+            list.clear();
+
+            layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+
+            loadJSON();
+
+        }
+        else {
+
+            progressBar.setVisibility(View.VISIBLE);
+
+        }
+
+    }
+
+    private void loadJSON() {
+
+        //request z Volleya
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, JSON_URL,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+
+//                        Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
+
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("ImagesList"); // nazwa tablicy w obiekcie zwracanym przez spec-a
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject obj = jsonArray.getJSONObject(i);
+                                Item listItem = new Item(
+                                        obj.getString("IMAGE_NAME"),
+                                        "Czas zapisu: " + obj.getString("IMAGE_SAVE_TIME"),
+                                        "Wielkość zdjęcia: " + obj.getString("IMAGE_SIZE")
+
+                                );
+                                list.add(listItem);
+                            }
+                            adapter = new RAdapter(list);
+                            recyclerView.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("xxx", "error" + error.getMessage());
+                    }
+                }
+        );
+        //
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        requestQueue.add(stringRequest);
+    }
+
     private void save(Bitmap b){
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -351,6 +446,14 @@ public class MainActivity extends AppCompatActivity {
         image.setLayoutParams(params);
         alert.setView(image);
         alert.show();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        displayRecycle();
 
     }
 }

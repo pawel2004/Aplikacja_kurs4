@@ -14,36 +14,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4">
+            android:layout_weight="3"
+            android:background="@color/grey">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/grey">
+                android:layout_height="match_parent">
 
                 <ProgressBar
-                    android:layout_width="@dimen/progressbar_width"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/progressbar_height"
-                    android:layout_centerInParent="true"
-                    />
+                    android:layout_gravity="center"
+                    android:id="@+id/progress_bar"
+                    android:layout_centerInParent="true"/>
 
-                <ImageView
-                    android:layout_width="@dimen/arrow_width"
-                    android:layout_height="@dimen/arrow_height"
-                    android:src="@drawable/baseline_arrow_back_ios_black_18dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="@dimen/arrow_marginLeft"
-                    android:layout_centerVertical="true"/>
-
-                <ImageView
-                    android:layout_width="@dimen/arrow_width"
-                    android:layout_height="@dimen/arrow_height"
-                    android:src="@drawable/baseline_arrow_forward_ios_black_18dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/arrow_marginRight"
-                    android:layout_centerVertical="true"/>
-
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/recyclerView"/>
 
             </RelativeLayout>
 
@@ -255,8 +243,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_height="@dimen/progressbar_height"
             android:id="@+id/language_set">
 
             <TextView

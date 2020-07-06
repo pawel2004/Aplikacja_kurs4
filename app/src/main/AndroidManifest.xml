@@ -23,23 +23,31 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.PhotoActivity" />
-        <activity android:name=".Activities.FileActivity" />
+        <activity android:name=".Activities.PhotoActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.FileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.CameraActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.NetworkActivity" />
-        <activity android:name=".Activities.CollageActivity" />
-        <activity android:name=".Activities.AlbumsActivity" />
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.NetworkActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.CollageActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.AlbumsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.MainActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.NoteActivity" />
-        <activity android:name=".Activities.ChooseCollageActivity"></activity>
+        <activity android:name=".Activities.NoteActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.ChooseCollageActivity"
+            android:screenOrientation="portrait" ></activity>
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
 

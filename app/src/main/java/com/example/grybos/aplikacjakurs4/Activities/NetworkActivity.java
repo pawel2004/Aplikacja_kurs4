@@ -87,7 +87,7 @@ public class NetworkActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        Toast.makeText(NetworkActivity.this, response, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(NetworkActivity.this, response, Toast.LENGTH_LONG).show();
 
                         JSONObject jsonObject = null;
                         try {

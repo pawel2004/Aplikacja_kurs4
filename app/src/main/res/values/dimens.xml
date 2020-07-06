@@ -20,4 +20,6 @@
     <dimen name="text_size2">16sp</dimen>
     <dimen name="text_size3">12sp</dimen>
     <dimen name="card_margin">12dp</dimen>
+    <dimen name="card_margin2">10dp</dimen>
+    <dimen name="card_margin3">16dp</dimen>
 </resources>

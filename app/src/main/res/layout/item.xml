@@ -15,20 +15,23 @@
             android:layout_height="24dp"
             android:id="@+id/timeTxt"
             android:textSize="@dimen/text_size2"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="@dimen/card_margin2"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:id="@+id/sizeTxt"
             android:textSize="@dimen/text_size3"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:layout_margin="@dimen/card_margin2"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:id="@+id/imageView"/>
+            android:id="@+id/imageView"
+            android:layout_margin="@dimen/card_margin3"/>
 
     </LinearLayout>
 
